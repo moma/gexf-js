@@ -112,7 +112,7 @@ var GexfJS = {
             "nodes" : "N&oelig;uds",
             "inLinks" : "Liens entrants depuis :",
             "outLinks" : "Liens sortants vers :",
-            "undirLinks" : "Liens non-dirigés avec :",
+            "undirLinks" : "Termes associés :",
             "lensOn" : "Activer le mode loupe",
             "lensOff" : "Désactiver le mode loupe",
             "edgeOn" : "Afficher les sommets",
@@ -189,6 +189,7 @@ function replaceURLWithHyperlinks(text) {
 
 function displayNode(_nodeIndex, _recentre) {
     GexfJS.params.currentNode = _nodeIndex;
+    var _q='https://www.google.fr/#output=search&q=';
     if (_nodeIndex != -1) {
         var _d = GexfJS.graph.nodeList[_nodeIndex],
             _b = _d.coords.base,
