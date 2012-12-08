@@ -239,7 +239,7 @@ function displayNode(_nodeIndex, _recentre) {
             .val(_d.label)
             .removeClass('grey');
     }
-    _str+='<br/><h4><a href="'+_q+' target=_blank">Google Search</a></h4>';
+    _str+='<br/><h4><a href="'+_q+'" target=_blank>Google Search</a></h4>';
     $("#leftcontent").html(_str);
 }
 
