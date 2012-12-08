@@ -605,7 +605,7 @@ function traceMap() {
         _edgeSizeFactor = _sizeFactor * GexfJS.params.edgeWidthFactor,
         _nodeSizeFactor = _sizeFactor * GexfJS.params.nodeSizeFactor,
         _textSizeFactor = 1,
-        _limTxt = 9;
+        _limTxt = 4;// Threshold for node display
     
     GexfJS.ctxGraphe.clearRect(0, 0, GexfJS.graphZone.width, GexfJS.graphZone.height);
     
