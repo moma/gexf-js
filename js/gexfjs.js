@@ -203,7 +203,9 @@ function displayNode(_nodeIndex, _recentre) {
                     left: _cG.width() + "px"
                 });
             });
-        _str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div>' + _d.label + '</h3>';
+        //_str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div>' + _d.label + '</h3>';
+
+        _str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div><a href='+'"https://www.google.fr/#output=search&q=%22' + _d.label.replace(" ","+") + '%22" target=_blank>' + _d.label + '</a></h3>';
         _str += '<h4>' + strLang("nodeAttr") + '</h4>';
         _str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
         for (var i in _d.attributes) {
@@ -237,7 +239,7 @@ function displayNode(_nodeIndex, _recentre) {
             .val(_d.label)
             .removeClass('grey');
     }
-    _str+='<br/><h4><a href="'+_q+'">Google Search</a></h4>';
+    _str+='<br/><h4><a href="'+_q+' target=_blank">Google Search</a></h4>';
     $("#leftcontent").html(_str);
 }
 
