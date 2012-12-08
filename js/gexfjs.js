@@ -6,6 +6,7 @@
  *    Jaakko Salonen (Finnish)
  *    Zeynep Akata (Turkish)
  *    Σωτήρης Φραγκίσκος (Greek)
+ *  Adapted by David Chavalarias and Jean-Philippe Cointet
  * */
 
 // Namespace
@@ -25,7 +26,7 @@ var GexfJS = {
     },
     oldParams : {},
     minZoom : -3,
-    maxZoom : 10,
+    maxZoom : 20,
     overviewWidth : 200,
     overviewHeight : 175,
     baseWidth : 800,
@@ -206,6 +207,7 @@ function displayNode(_nodeIndex, _recentre) {
         //_str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div>' + _d.label + '</h3>';
 
         _str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div><a href='+'"https://www.google.fr/#output=search&q=%22' + _d.label.replace(" ","+") + '%22" target=_blank>' + _d.label + '</a></h3>';
+        _q+='%22' + _d.label.replace(" ","+") + '%22+AND+('
         _str += '<h4>' + strLang("nodeAttr") + '</h4>';
         _str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
         for (var i in _d.attributes) {
@@ -218,7 +220,7 @@ function displayNode(_nodeIndex, _recentre) {
                 var _n = GexfJS.graph.nodeList[_e.source];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.source + '" onclick="displayNode(' + _e.source + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
                 _q+="%22" + _n.label.replace(" ","+") + "%22";                 
-                if (i < GexfJS.graph.edgeList.length - 1) _q +="+AND+"; 
+                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+"; 
             }
         }
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
@@ -227,6 +229,8 @@ function displayNode(_nodeIndex, _recentre) {
             if ( _e.source == _nodeIndex ) {
                 var _n = GexfJS.graph.nodeList[_e.target];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.target + '" onclick="displayNode(' + _e.target + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
+                _q+="%22" + _n.label.replace(" ","+") + "%22";                 
+                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+"; 
             }
         }
         _str += '</ul><p></p>';
@@ -239,7 +243,8 @@ function displayNode(_nodeIndex, _recentre) {
             .val(_d.label)
             .removeClass('grey');
     }
-    _str+='<br/><h4><a href="'+_q+'" target=_blank>Google Search</a></h4>';
+    _str+='<br/><h4><a href="'+_q+')" target=_blank>Google Search</a>';
+    _str+=' <a href="'+_q.replace("OR","AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
     $("#leftcontent").html(_str);
 }
 
