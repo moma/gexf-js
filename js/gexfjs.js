@@ -215,6 +215,8 @@ function displayNode(_nodeIndex, _recentre) {
             if ( _e.target == _nodeIndex ) {
                 var _n = GexfJS.graph.nodeList[_e.source];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.source + '" onclick="displayNode(' + _e.source + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
+                _q+="%22" + _n.label.replace(" ","+") + "%22";                 
+                if (i < GexfJS.graph.edgeList.length - 1) _q +="+AND+"; 
             }
         }
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
@@ -235,6 +237,8 @@ function displayNode(_nodeIndex, _recentre) {
             .val(_d.label)
             .removeClass('grey');
     }
+    _str+='<br/><h4><a href="'+_q+'">Google Search</a></h4>';
+    $("#leftcontent").html(_str);
 }
 
 function updateWorkspaceBounds() {
