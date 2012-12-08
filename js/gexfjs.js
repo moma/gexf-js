@@ -706,9 +706,15 @@ function traceMap() {
                         _fs = Math.max(_limTxt + 2, _fs);
                     }
                 }
-                if (_fs > _limTxt) {
+                if(GexfJS.params.zoomLevel-3<0){// on prend en compte le zoom dans la taille
+                        var factor=-GexfJS.params.zoomLevel+3;
+                    }else{
+                        var factor=1;
+                    }
+                if (_fs*factor > _limTxt) {
                     GexfJS.ctxGraphe.fillStyle = ( ( i != GexfJS.params.activeNode ) && _tagsMisEnValeur.length && ( ( !_d.isTag ) || ( _centralNode != -1 ) ) ? "rgba(60,60,60,0.7)" : "rgb(0,0,0)" );
-                    GexfJS.ctxGraphe.font = Math.floor( _fs )+"px Arial";
+
+                    GexfJS.ctxGraphe.font = factor*Math.floor( _fs )+"px Arial";  
                     GexfJS.ctxGraphe.textAlign = "center";
                     GexfJS.ctxGraphe.textBaseline = "middle";
                     GexfJS.ctxGraphe.fillText(_d.label, _d.coords.real.x, _d.coords.real.y);
