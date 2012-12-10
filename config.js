@@ -1,7 +1,7 @@
 /*** USE THIS FILE TO SET OPTIONS ***/
 
 setParams({
-    graphFile : "risk.gexf",
+    graphFile : "risk_high.gexf",
     //graphFile : "miserables.gexf",
         /*
             The GEXF file to show ! -- can be overriden by adding

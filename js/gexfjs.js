@@ -194,7 +194,7 @@ function displayNode(_nodeIndex, _recentre) {
     if (_nodeIndex != -1) {
         var _d = GexfJS.graph.nodeList[_nodeIndex],
             _b = _d.coords.base,
-            _str = '',
+            _str = '<a href=index.html>Cluster Level</a> | <a href=index.html#risk.gexf>Terms Level</a> ',
             _cG = $("#leftcolumn");
             _cG.animate({
                 "left" : "0px"
