@@ -7,11 +7,11 @@ setParams({
             The GEXF file to show ! -- can be overriden by adding
             a hash to the document location, e.g. index.html#celegans.gexf
         */
-	showEdges : false,
+	showEdges : true,
         /*
             Default state of the "show edges" button
         */
-    useLens : false,
+    useLens : true,
         /*
             Default state of the "use lens" button
         */

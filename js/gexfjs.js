@@ -12,7 +12,7 @@
 // Namespace
 var GexfJS = {
     lensRadius : 200,
-    lensGamma : 0.5,
+    lensGamma : 0.7,
     graphZone : {
         width : 0,
         height : 0
@@ -548,7 +548,7 @@ function calcCoord(x, y, coord) {
         return {
             "x" : x + _newr * _cos,
             "y" : y + _newr * _sin,
-            "r" : _coeff * coord.r
+            "r" : 3*_coeff * coord.r
         }
     }
     else {
