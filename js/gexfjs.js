@@ -39,7 +39,7 @@ var GexfJS = {
     ZoomThreshold : 3, // seuil au delà duquel on applique zoomBoost
     ZoomBoost : 3,// facteur de zoom boost
     factorMaxLevel : 2,// facteur max
-    
+    MaxGoogleTermsInQuery : 20,    
     i18n : {
         "el" : {
             "search" : "Αναζήτηση Κόμβων",
@@ -197,6 +197,7 @@ function replaceURLWithHyperlinks(text) {
 function displayNode(_nodeIndex, _recentre) {
     GexfJS.params.currentNode = _nodeIndex;
     var _q='https://www.google.fr/#output=search&q=';
+    var count=0;// nombre de termes associées utilisés dans la requête Google
     if (_nodeIndex != -1) {
         var _d = GexfJS.graph.nodeList[_nodeIndex],
             _b = _d.coords.base,
@@ -210,6 +211,7 @@ function displayNode(_nodeIndex, _recentre) {
                     left: _cG.width() + "px"
                 });
             });
+
         //_str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div>' + _d.label + '</h3>';
 
         _str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div><a href='+'"https://www.google.fr/#output=search&q=%22' + _d.label.replace(" ","+") + '%22" target=_blank>' + _d.label + '</a></h3>';
@@ -222,25 +224,37 @@ function displayNode(_nodeIndex, _recentre) {
             }            
         }
         _str += '</ul><h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4><ul>';
+
         for (var i in GexfJS.graph.edgeList) {
             var _e = GexfJS.graph.edgeList[i]
             if ( _e.target == _nodeIndex ) {
                 var _n = GexfJS.graph.nodeList[_e.source];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.source + '" onclick="displayNode(' + _e.source + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
-                _q+="%22" + _n.label.replace(" ","+") + "%22";                 
-                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+";                                 
+                if (count<GexfJS.MaxGoogleTermsInQuery){
+                    _q+="%22" + _n.label.replace(" ","+") + "%22";                 
+                    count=count+1;
+                    _q +="+OR+";   
+                  
+            }
+                
             }
         }
+        _str+='outLinks<br/>';
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
-        for (var i in GexfJS.graph.edgeList) {
+        for (var i in GexfJS.graph.edgeList) {            
             var _e = GexfJS.graph.edgeList[i]
             if ( _e.source == _nodeIndex ) {
                 var _n = GexfJS.graph.nodeList[_e.target];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.target + '" onclick="displayNode(' + _e.target + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
-                _q+="%22" + _n.label.replace(" ","+") + "%22";                 
-                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+";         
+                if (count<GexfJS.MaxGoogleTermsInQuery){
+                    _q+="%22" + _n.label.replace(" ","+") + "%22";                 
+                _q +="+OR+";                   
+                count=count+1;  
+            }       
             }
         }
+
+        _q=_q.substring(0,_q.length-3);
         _str += '</ul><p></p>';
         $("#leftcontent").html(_str);
         if (_recentre) {
@@ -252,7 +266,7 @@ function displayNode(_nodeIndex, _recentre) {
             .removeClass('grey');
     }
     _str+='<br/><h4><a href="'+_q+')" target=_blank>Google Search</a>';
-    _str+=' <a href="'+_q.replace("OR","AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
+    _str+=' <a href="'+_q.replace(/OR/g,"AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
     $("#leftcontent").html(_str);
 }
 
@@ -967,3 +981,15 @@ $(document).ready(function() {
         return false;
     });
 });
+
+/*
+ * Sorts list of objects containing a numeric values, given a valuekey
+ */
+function  numericListSort(listitems, valuekey) {
+    listitems.sort(function(a, b) {
+        var compA = parseFloat(a[valuekey]);
+        var compB = parseFloat(b[valuekey]);
+        return (compA > compB) ? -1 : (compA <= compB) ? 1 : 0;
+    })
+    return listitems;
+};
