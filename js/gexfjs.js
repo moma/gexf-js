@@ -217,7 +217,9 @@ function displayNode(_nodeIndex, _recentre) {
         _str += '<h4>' + strLang("nodeAttr") + '</h4>';
         _str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
         for (var i in _d.attributes) {
-            _str += '<li><b>' + strLang(i) + '</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
+            if ((strLang(i)=='cluster label')|(strLang(i)=='weight')|(strLang(i)=='period')){
+                _str += '<li><b>' + strLang(i) + '</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
+            }            
         }
         _str += '</ul><h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4><ul>';
         for (var i in GexfJS.graph.edgeList) {
@@ -226,7 +228,7 @@ function displayNode(_nodeIndex, _recentre) {
                 var _n = GexfJS.graph.nodeList[_e.source];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.source + '" onclick="displayNode(' + _e.source + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
                 _q+="%22" + _n.label.replace(" ","+") + "%22";                 
-                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+"; 
+                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+";                                 
             }
         }
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
@@ -236,7 +238,7 @@ function displayNode(_nodeIndex, _recentre) {
                 var _n = GexfJS.graph.nodeList[_e.target];
                 _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.target + '" onclick="displayNode(' + _e.target + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
                 _q+="%22" + _n.label.replace(" ","+") + "%22";                 
-                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+"; 
+                if (i < GexfJS.graph.edgeList.length - 1) _q +="+OR+";         
             }
         }
         _str += '</ul><p></p>';
