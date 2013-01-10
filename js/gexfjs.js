@@ -6,12 +6,12 @@
  *    Jaakko Salonen (Finnish)
  *    Zeynep Akata (Turkish)
  *    Σωτήρης Φραγκίσκος (Greek)
- *  Adapted by David Chavalarias and Jean-Philippe Cointet
+ *  Adapted by David Chavalarias
  * */
 
 // Namespace
 var GexfJS = {
-    lensRadius : 200,
+    lensRadius : 150,
     lensGamma : 0.7,
     graphZone : {
         width : 0,
@@ -34,6 +34,12 @@ var GexfJS = {
     overviewScale : .25,
     totalScroll : 0,
     autoCompletePosition : 0,
+    // gestion des taille de label. Permet de garder des labels visibles même en dezoomant beaucoup
+    MaxLabelSize : 16 ,// max size de label
+    ZoomThreshold : 3, // seuil au delà duquel on applique zoomBoost
+    ZoomBoost : 3,// facteur de zoom boost
+    factorMaxLevel : 2,// facteur max
+    
     i18n : {
         "el" : {
             "search" : "Αναζήτηση Κόμβων",
@@ -706,15 +712,16 @@ function traceMap() {
                         _fs = Math.max(_limTxt + 2, _fs);
                     }
                 }
-                if(GexfJS.params.zoomLevel-3<0){// on prend en compte le zoom dans la taille
-                        var factor=-GexfJS.params.zoomLevel+3;
+                if(GexfJS.params.zoomLevel-GexfJS.ZoomThreshold<0){// on prend en compte le zoom dans la taille
+                        var factor=Math.min(GexfJS.factorMaxLevel,-GexfJS.params.zoomLevel+GexfJS.ZoomBoost);
                     }else{
                         var factor=1;
                     }
+                //var factor=1;    
                 if (_fs*factor > _limTxt) {
                     GexfJS.ctxGraphe.fillStyle = ( ( i != GexfJS.params.activeNode ) && _tagsMisEnValeur.length && ( ( !_d.isTag ) || ( _centralNode != -1 ) ) ? "rgba(60,60,60,0.7)" : "rgb(0,0,0)" );
-
-                    GexfJS.ctxGraphe.font = factor*Math.floor( _fs )+"px Arial";  
+                    // on limite la taille d'affichage à 16 px
+                    GexfJS.ctxGraphe.font = Math.min(factor*Math.floor( _fs ),GexfJS.MaxLabelSize)+"px Arial";  
                     GexfJS.ctxGraphe.textAlign = "center";
                     GexfJS.ctxGraphe.textBaseline = "middle";
                     GexfJS.ctxGraphe.fillText(_d.label, _d.coords.real.x, _d.coords.real.y);

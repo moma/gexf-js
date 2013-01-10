@@ -11,7 +11,7 @@ setParams({
         /*
             Default state of the "show edges" button
         */
-    useLens : true,
+    useLens : false,
         /*
             Default state of the "use lens" button
         */
