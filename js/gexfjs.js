@@ -225,35 +225,52 @@ function displayNode(_nodeIndex, _recentre) {
         }
         _str += '</ul><h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4><ul>';
 
+        // on trie les voisins en fonction des liens décroissants
+        var in_neighb=[];
+        var out_neighb=[];
         for (var i in GexfJS.graph.edgeList) {
             var _e = GexfJS.graph.edgeList[i]
-            if ( _e.target == _nodeIndex ) {
-                var _n = GexfJS.graph.nodeList[_e.source];
-                _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.source + '" onclick="displayNode(' + _e.source + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
-                if (count<GexfJS.MaxGoogleTermsInQuery){
-                    _q+="%22" + _n.label.replace(" ","+") + "%22";                 
-                    count=count+1;
-                    _q +="+OR+";   
-                  
-            }
-                
-            }
+            if ( _e.target == _nodeIndex ) {        
+                 var _n = GexfJS.graph.nodeList[_e.source];                
+                in_neighb[i] = {
+                color: _n.color.base,
+                label: _n.label,
+                weight: _e.weight,
+                id : _e.source
+                };
+            }else if ( _e.source == _nodeIndex ) {
+                var _n = GexfJS.graph.nodeList[_e.target];                
+                out_neighb[i] = {
+                color: _n.color.base,
+                label: _n.label,
+                weight: _e.weight,
+                id : _e.target
+                };
+            } 
         }
-        _str+='outLinks<br/>';
-        if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
-        for (var i in GexfJS.graph.edgeList) {            
-            var _e = GexfJS.graph.edgeList[i]
-            if ( _e.source == _nodeIndex ) {
-                var _n = GexfJS.graph.nodeList[_e.target];
-                _str += '<li><div class="smallpill" style="background: ' + _n.color.base +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + _e.target + '" onclick="displayNode(' + _e.target + ', true); return false;">' + _n.label + '</a>' + ( GexfJS.params.showEdgeWeight && _e.weight ? ' [' + _e.weight + ']' : '') + '</li>';
+        in_neighb.sort(function(a,b){return b.weight-a.weight});        
+        out_neighb.sort(function(a,b){return b.weight-a.weight});        
+
+        for (var i in in_neighb) {
+                _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].source + '" onclick="displayNode(' + in_neighb[i].source + ', true); return false;">' + in_neighb[i].label + '</a>' + ( GexfJS.params.showEdgeWeight && in_neighb[i].weight ? ' [' + decimal(in_neighb[i].weight,100) + ']' : '') + '</li>';
                 if (count<GexfJS.MaxGoogleTermsInQuery){
-                    _q+="%22" + _n.label.replace(" ","+") + "%22";                 
+                    _q+="%22" + in_neighb[i].label.replace(" ","+") + "%22";                 
+                    count=count+1;
+                    _q +="+OR+";                     
+                }                            
+        }
+
+        _str+='Termes plus génériques<br/>';
+        if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
+        for (var i in out_neighb) {
+                _str += '<li><div class="smallpill" style="background: ' + out_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + out_neighb[i].id + '" onclick="displayNode(' + out_neighb[i].id + ', true); return false;">' + out_neighb[i].label + '</a>' + ( GexfJS.params.showEdgeWeight && out_neighb[i].weight ? ' [' + decimal(out_neighb[i].weight,100) + ']' : '') + '</li>';
+                if (count<GexfJS.MaxGoogleTermsInQuery){
+                    _q+="%22" + out_neighb[i].label.replace(" ","+") + "%22";                 
                 _q +="+OR+";                   
                 count=count+1;  
             }       
-            }
         }
-
+        
         _q=_q.substring(0,_q.length-3);
         _str += '</ul><p></p>';
         $("#leftcontent").html(_str);
@@ -982,14 +999,6 @@ $(document).ready(function() {
     });
 });
 
-/*
- * Sorts list of objects containing a numeric values, given a valuekey
- */
-function  numericListSort(listitems, valuekey) {
-    listitems.sort(function(a, b) {
-        var compA = parseFloat(a[valuekey]);
-        var compB = parseFloat(b[valuekey]);
-        return (compA > compB) ? -1 : (compA <= compB) ? 1 : 0;
-    })
-    return listitems;
+function  decimal(number,precision) {    
+    return Math.floor(number*precision)/precision;
 };
