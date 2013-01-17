@@ -252,7 +252,7 @@ function displayNode(_nodeIndex, _recentre) {
         out_neighb.sort(function(a,b){return b.weight-a.weight});        
 
         for (var i in in_neighb) {
-                _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].source + '" onclick="displayNode(' + in_neighb[i].source + ', true); return false;">' + in_neighb[i].label + '</a>' + ( GexfJS.params.showEdgeWeight && in_neighb[i].weight ? ' [' + decimal(in_neighb[i].weight,100) + ']' : '') + '</li>';
+                _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].id + '" onclick="displayNode(' + in_neighb[i].id + ', true); return false;">' + in_neighb[i].label + '</a>' + ( GexfJS.params.showEdgeWeight && in_neighb[i].weight ? ' [' + decimal(in_neighb[i].weight,100) + ']' : '') + '</li>';
                 if (count<GexfJS.MaxGoogleTermsInQuery){
                     _q+="%22" + in_neighb[i].label.replace(" ","+") + "%22";                 
                     count=count+1;
