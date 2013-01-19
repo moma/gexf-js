@@ -119,7 +119,7 @@ var GexfJS = {
             "nodes" : "N&oelig;uds",
             "inLinks" : "Liens entrants depuis :",
             "outLinks" : "Liens sortants vers :",
-            "undirLinks" : "Termes associés :",
+            "undirLinks" : "Associated terms:",
             "lensOn" : "Activer le mode loupe",
             "lensOff" : "Désactiver le mode loupe",
             "edgeOn" : "Afficher les sommets",
@@ -201,7 +201,7 @@ function displayNode(_nodeIndex, _recentre) {
     if (_nodeIndex != -1) {
         var _d = GexfJS.graph.nodeList[_nodeIndex],
             _b = _d.coords.base,
-            _str = '<a href=index.html>Cluster Level</a> | <a href=index.html#risk.gexf>Terms Level</a> ',
+            _str = '<a href=index.html>Cluster Level</a> | <a href=index.html#risk_size=cooc_color=cluster.gexf>Terms Level</a> ',
             _cG = $("#leftcolumn");
             _cG.animate({
                 "left" : "0px"
@@ -218,16 +218,34 @@ function displayNode(_nodeIndex, _recentre) {
         _q+='%22' + _d.label.replace(" ","+") + '%22+AND+('
         _str += '<h4>' + strLang("nodeAttr") + '</h4>';
         _str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
+        // affichage des infos du noeud
         for (var i in _d.attributes) {
-            if ((strLang(i)=='cluster label')|(strLang(i)=='weight')|(strLang(i)=='period')){
-                _str += '<li><b>' + strLang(i) + '</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
-            }            
+            if ((strLang(i)=='cluster label')){
+                _str += '<li><b>Label</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
+            };
+            if (strLang(i)=='weight'){
+                _str += '<li><b>Co-occ.</b> : ' + decimal( _d.attributes[i],100) + '</li>';
+            };  
+
+            if (strLang(i)=='period'){
+                _str += '<li><b>Period</b> : ' + _d.attributes[i].replace("_","-") + '</li>';
+            };
+            if (strLang(i)=='croissance'){
+                _str += '<li><b>Growth</b> : ' + decimal( (_d.attributes[i]-1)*100,100) + '%</li>';
+            }; 
+                      
         }
         _str += '</ul><h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4><ul>';
 
         // on trie les voisins en fonction des liens décroissants
         var in_neighb=[];
         var out_neighb=[];
+// for (var i in _d.attributes) {
+//             if ((strLang(i)=='cluster label')|(strLang(i)=='weight')|(strLang(i)=='period')){
+//                 _str += '<li><b>' + strLang(i) + '</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
+//             }            
+//         }
+        
         for (var i in GexfJS.graph.edgeList) {
             var _e = GexfJS.graph.edgeList[i]
             if ( _e.target == _nodeIndex ) {        
@@ -236,6 +254,7 @@ function displayNode(_nodeIndex, _recentre) {
                 color: _n.color.base,
                 label: _n.label,
                 weight: _e.weight,
+                croissance:_n.attributes.croissance,
                 id : _e.source
                 };
             }else if ( _e.source == _nodeIndex ) {
@@ -243,6 +262,7 @@ function displayNode(_nodeIndex, _recentre) {
                 out_neighb[i] = {
                 color: _n.color.base,
                 label: _n.label,
+                croissance:_n.attributes.croissance,
                 weight: _e.weight,
                 id : _e.target
                 };
@@ -252,7 +272,14 @@ function displayNode(_nodeIndex, _recentre) {
         out_neighb.sort(function(a,b){return b.weight-a.weight});        
 
         for (var i in in_neighb) {
-                _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].id + '" onclick="displayNode(' + in_neighb[i].id + ', true); return false;">' + in_neighb[i].label + '</a>' + ( GexfJS.params.showEdgeWeight && in_neighb[i].weight ? ' [' + decimal(in_neighb[i].weight,100) + ']' : '') + '</li>';
+                _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].id + '" onclick="displayNode(' + in_neighb[i].id + ', true); return false;">' + in_neighb[i].label + '</a>';
+                if (decimal( (in_neighb[i].croissance-1)*100,100)>50){
+                    _str += '<img src="img/star.gif">';
+                };
+                if (decimal( (in_neighb[i].croissance-1)*100,100)>150){
+                    _str += '<img src="img/star.gif">';
+                };
+                 _str += ( GexfJS.params.showEdgeWeight && in_neighb[i].weight ? ' [' + decimal(in_neighb[i].weight,100) + ']' : '') + '</li>';
                 if (count<GexfJS.MaxGoogleTermsInQuery){
                     _q+="%22" + in_neighb[i].label.replace(" ","+") + "%22";                 
                     count=count+1;
@@ -260,10 +287,17 @@ function displayNode(_nodeIndex, _recentre) {
                 }                            
         }
 
-        _str+='Termes plus génériques<br/>';
+        _str+='<h4>More generic terms :</h4>';
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
         for (var i in out_neighb) {
-                _str += '<li><div class="smallpill" style="background: ' + out_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + out_neighb[i].id + '" onclick="displayNode(' + out_neighb[i].id + ', true); return false;">' + out_neighb[i].label + '</a>' + ( GexfJS.params.showEdgeWeight && out_neighb[i].weight ? ' [' + decimal(out_neighb[i].weight,100) + ']' : '') + '</li>';
+                _str += '<li><div class="smallpill" style="background: ' + out_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + out_neighb[i].id + '" onclick="displayNode(' + out_neighb[i].id + ', true); return false;">' + out_neighb[i].label + '</a>';
+                    if (decimal( (out_neighb[i].croissance-1)*100,100)>50){
+                    _str += '<img src="img/star.gif">';
+                }
+                if (decimal( (out_neighb[i].croissance-1)*100,100)>150){
+                    _str += '<img src="img/star.gif">';
+                };
+                 _str += ( GexfJS.params.showEdgeWeight && out_neighb[i].weight ? ' [' + decimal(out_neighb[i].weight,100) + ']' : '') + '</li>';
                 if (count<GexfJS.MaxGoogleTermsInQuery){
                     _q+="%22" + out_neighb[i].label.replace(" ","+") + "%22";                 
                 _q +="+OR+";                   
@@ -284,6 +318,9 @@ function displayNode(_nodeIndex, _recentre) {
     }
     _str+='<br/><h4><a href="'+_q+')" target=_blank>Google Search</a>';
     _str+=' <a href="'+_q.replace(/OR/g,"AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
+    _str+='<br/><h4>Legend</h4>';
+    _str+='<img src="img/star.gif">: Growth rate between +50% and +150%<br/><img src="img/star.gif"><img src="img/star.gif">: Growth rate above +150%<br/>'
+    
     $("#leftcontent").html(_str);
 }
 
@@ -455,16 +492,22 @@ function loadGraph() {
                 nodeIndexByLabel : [],
                 edgeList : []
             }
-            var _xmin = 1e9, _xmax = -1e9, _ymin = 1e9, _ymax = -1e9; _marge = 30;
+            var _xmin = 1e9, _xmax = -1e9, _ymin = 1e9, _ymax = -1e9; _marge = 30, _weight_max=0;// on calcul le weight max des noeud à la volée.
             $(_nodes).each(function() {
                 var _n = $(this),
                 _pos = _n.find("viz\\:position,position"),
                 _x = _pos.attr("x"),
-                _y = _pos.attr("y");
+                _y = _pos.attr("y");                
                 _xmin = Math.min(_x, _xmin);
                 _xmax = Math.max(_x, _xmax);
                 _ymin = Math.min(_y, _ymin);
                 _ymax = Math.max(_y, _ymax);
+                // {try{
+                //     _weight=_n.attr("weight");
+                // }catch(err){
+                //     _weight=0;
+                // }}
+                // _weight_max= Math.max(_weight_max,_weight);// taille max des noeud
             });
             
             var _echelle = Math.min( ( GexfJS.baseWidth - _marge ) / ( _xmax - _xmin ) , ( GexfJS.baseHeight - _marge ) / ( _ymax - _ymin ) );

@@ -16,6 +16,15 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
         <script type="text/javascript" src="js/gexfjs.js"></script>
         <script type="text/javascript" src="config.js"></script>
+         <script>
+$(function() {
+$( "input[type=Clusters], a, button" )
+.button()
+.click(function( event ) {
+event.window.open(#risk_Size=cooc_color=growth.gexf);
+});
+});
+</script>
     </head>
     <body>
         <div id="zonecentre" class="gradient">
@@ -59,6 +68,10 @@
         </div>        
         <ul id="autocomplete">
         </ul>
-        <div><span align=left>Toto<span></div>
+        <div id="maps">
+        <button type="Clusters"> Clusters level </button>
+        <button type="Weight"> Terms Weight </button>
+        <button type="Dynamics"> Terms Dynamics </button>    
+        </div>
     </body>
 </html>
