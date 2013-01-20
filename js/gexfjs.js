@@ -227,8 +227,8 @@ function displayNode(_nodeIndex, _recentre) {
                 };
         _str += '</h3>';
         _q+='%22' + _d.label.replace(" ","+") + '%22+AND+('
-        _str += '<h4>' + strLang("nodeAttr") + '</h4>';
-        _str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
+        _str += '<div id=attributs>';
+        //_str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
         // affichage des infos du noeud
         for (var i in _d.attributes) {
             if ((strLang(i)=='cluster label')){
@@ -246,7 +246,7 @@ function displayNode(_nodeIndex, _recentre) {
             }; 
                       
         }
-        
+        _str += '</div>';
         // on trie les voisins en fonction des liens décroissants
         var in_neighb=[];
         var out_neighb=[];
@@ -323,7 +323,7 @@ function displayNode(_nodeIndex, _recentre) {
         
 
         if (in_neighb.length>0){
-        _str += '<h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4>';
+        _str += '<br/><h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4>';
         };
 
         for (var i in in_neighb) {
@@ -347,7 +347,7 @@ function displayNode(_nodeIndex, _recentre) {
         }
 
         if (out_neighb.length>0){
-        _str+='<h4>Generic neighbors:</h4>';
+        _str+='<br/><h4>Generic neighbors:</h4>';
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
         }
 
@@ -384,7 +384,7 @@ function displayNode(_nodeIndex, _recentre) {
     _str+='<br/><h4><a href="'+_q+')" target=_blank>Google Search</a>';
     _str+=' <a href="'+_q.replace(/OR/g,"AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
     _str+='<br/><h4>Legend</h4>';
-    _str+='<img src="img/star.gif">: Growth rate between +25% and +75%<br/><img src="img/star.gif"><img src="img/star.gif">: Growth rate between +75% and +150%<br/><img src="img/star.gif"><img src="img/star.gif"><img src="img/star.gif">: Growth rate above +150%<br/>'
+    _str+='<img src="img/star.gif">: Growth rate between +25% and +75%<br/><img src="img/star.gif"><img src="img/star.gif">: Growth rate between +75% and +150%<br/><img src="img/star.gif"><img src="img/star.gif"><img src="img/star.gif">: Growth rate above +150%<br/><br/><br/><br/><br/><br/><br/><div id="footer"><p><i>Credits:</i> <a href="http://chavalarias.com" target="_blank"><img src="img/user.png" width=15></a> & <a href="http://jph.cointet.free.fr" target="_blank"><img src="img/user.png" width=15></a> </p></div>'
     
     $("#leftcontent").html(_str);
 }
