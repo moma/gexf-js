@@ -36,8 +36,8 @@ var GexfJS = {
     autoCompletePosition : 0,
     // gestion des taille de label. Permet de garder des labels visibles même en dezoomant beaucoup
     MaxLabelSize : 25 ,// max size de label
-    ZoomThreshold : 3, // seuil au delà duquel on applique zoomBoost
-    ZoomBoost : 3,// facteur de zoom boost
+    ZoomThreshold : 5, // seuil au delà duquel on applique zoomBoost
+    ZoomBoost : 5,// facteur de zoom boost
     factorMaxLevel : 2,// facteur max
     MaxGoogleTermsInQuery : 20,    
     i18n : {
