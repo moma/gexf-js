@@ -20,11 +20,12 @@ body {
 /* EN HAUT */
 
 #titlebar {
-    background: #ffffff; border-bottom: 1px solid #CCC; position: fixed; margin: 0; padding: 0; left: 0; top: 0; right: 0; height: 65px; overflow: hidden;
+    background: #000000; border-bottom: 1px solid #CCC; position: fixed; margin: 0; padding: 0; left: 0; top: 0; right: 0; height: 80px; overflow: hidden;
 }
 
 #maintitle {
     position: absolute; left: 0; top: 0; width: 250px; text-align: center;
+
 }
 
 
@@ -33,27 +34,27 @@ h1 {
 }
 
 h1 a {
-    background: url(../img/risk.jpg) no-repeat;
-    color: #208020;
+    background: url(../img/banner3.png) no-repeat;
+    color: #208020;    
     display: block;
-    height:65px;
+    height:80px;
     margin: 0;
     text-indent: -9999px;
-    width: 380px;
+    width: 1500px;
 }
 
 #searchinput {
     background: #fff url(../img/search.gif) no-repeat right;
     border: 1px solid #DDD;
     font-size: 14px; line-height: 14px, height: 14px;
-    left: 380px;
+    left: 300px;
     padding: 1px 4px; margin: 0;
     position: absolute;
-    top: 10px;
-    width: 320px;
+    top: 45px;
+    width: 530px;
 }
 #maps {
-    position: absolute; left: 800px; top: 13px; width: 600px; margin: 0; padding: 0; height: 60px; border: none; background: none;
+    position: absolute; left: 300px; top: 5px; width: 600px; margin: 0; padding: 0; height: 60px; border: none; background: none;
 }
 
 
@@ -78,7 +79,7 @@ h1 a {
 
 
 #carte {
-    position: absolute; left: 0px;
+    position: absolute; left: 0px; color: #000000; 
 }
 
 /* ZOOM IN OUT */
@@ -167,7 +168,7 @@ h1 a {
 /* COLONNE DE GAUCHE */
 
 #leftcolumn {
-    position: absolute; top: 45px; bottom: 0px; left: -250px; width: 250px; background-color: rgb(250, 250, 252); box-shadow: 2px 0 2px #808090; padding: 0;
+    position: absolute; top: 45px; bottom: 0px; left: -250px; width: 280px; background-color: rgb(250, 250, 252); box-shadow: 2px 0 2px #808090; padding: 0;
 }
 
 

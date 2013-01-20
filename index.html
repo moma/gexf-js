@@ -1,77 +1,96 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Risks Explorer</title>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="styles/gexfjs.css" />
-        <link rel="stylesheet" type="text/css" href="styles/jquery-ui.css" />
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript">
-        // Fallback in case JQuery CDN isn't available
-            if (typeof jQuery == 'undefined') {
-                document.write(unescape("%3Cscript type='text/javascript' src='js/jquery-1.7.2.min.js'%3E%3C/script%3E"));
-            }
-        </script>
-        <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-        <script type="text/javascript" src="js/gexfjs.js"></script>
-        <script type="text/javascript" src="config.js"></script>
-         <script>
-$(function() {
-$( "input[type=Clusters], a, button" )
-.button()
-.click(function( event ) {
-event.window.open(#risk_Size=cooc_color=growth.gexf);
-});
-});
-</script>
-    </head>
-    <body>
-        <div id="zonecentre" class="gradient">
-            <canvas id="carte" width="0" height="0"></canvas>
-            <ul id="ctlzoom">
-                <li>
-                    <a href="#" id="zoomPlusButton" title="S'approcher"> </a>
-                </li>
-                <li id="zoomSliderzone">
-                    <div id="zoomSlider"></div>
-                </li>
-                <li>
-                    <a href="#" id="zoomMinusButton" title="S'éloigner"> </a>
-                </li>
-                <li>
-                    <a href="#" id="lensButton"> </a>
-                </li>
-                <li>
-                    <a href="#" id="edgesButton"> </a>
-                </li>
-            </ul>
-        </div>
-        <div id="overviewzone" class="gradient">
-            <canvas id="overview" width="0" height="0"></canvas>
-        </div>
-        <div id="leftcolumn">            
-            <div id="unfold">
-                <a href="#" id="aUnfold" class="rightarrow"> </a>
-            </div>
-            <div id="leftcontent"></div>
-        </div>
-        <div id="titlebar">
-            <div id="maintitle">
-                <h1><a href="http://www.axa-research.org/" target="_blank" title="Risk Explorer">Risk Explorer</a></h1>
-            </div>
-            <form id="recherche">
-                <input id="searchinput" class="grey" autocomplete="off" />
-                <input id="searchsubmit" type="submit" />
-            </form>
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Risks Explorer</title>
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <link rel="stylesheet" type="text/css" href="styles/gexfjs.css" />
+            <link rel="stylesheet" type="text/css" href="styles/jquery-ui.css" />
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+            <script type="text/javascript">
+            // Fallback in case JQuery CDN isn't available
+                if (typeof jQuery == 'undefined') {
+                    document.write(unescape("%3Cscript type='text/javascript' src='js/jquery-1.7.2.min.js'%3E%3C/script%3E"));
+                }
+            </script>
+            <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+            <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+            <script type="text/javascript" src="js/gexfjs.js"></script>
+            <script type="text/javascript" src="config.js"></script>
 
-        </div>        
-        <ul id="autocomplete">
-        </ul>
-        <div id="maps">
-        <button type="Clusters"> Clusters level </button>
-        <button type="Weight"> Terms Weight </button>
-        <button type="Dynamics"> Terms Dynamics </button>    
-        </div>
-    </body>
-</html>
+    <script>
+    $(function() {
+    $( "Weight" )
+    .button()
+    .click(function( event ) {
+    event.window.open(#risk_Size=cooc_color=growth.gexf);
+    });});</script>
+
+<script>
+$(function(){
+    $("#topics").click(function(){
+        window.open("index.html#risk_high.gexf",'_self');
+    });
+    $("#size").click(function(){
+        window.open("index.html#risk_size=cooc_color=cluster.gexf",'_self');
+    });
+    $("#growth").click(function(){
+        window.open("index.html#risk_size=growth_color=cluster.gexf",'_self');
+    });
+    $("#combi").click(function(){
+        window.open("index.html#risk_size=cooc_color=growth.gexf",'_self');
+    });
+});</script>
+
+    </head>
+    <body>    
+            <div id="zonecentre" class="gradient">
+                <canvas id="carte" width="0" height="0"></canvas>
+                <ul id="ctlzoom">
+                    <li>
+                        <a href="#" id="zoomPlusButton" title="S'approcher"> </a>
+                    </li>
+                    <li id="zoomSliderzone">
+                        <div id="zoomSlider"></div>
+                    </li>
+                    <li>
+                        <a href="#" id="zoomMinusButton" title="S'éloigner"> </a>
+                    </li>
+                    <li>
+                        <a href="#" id="lensButton"> </a>
+                    </li>
+                    <li>
+                        <a href="#" id="edgesButton"> </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="overviewzone" class="gradient">
+                <canvas id="overview" width="0" height="0"></canvas>
+            </div>
+            <div id="leftcolumn">            
+                <div id="unfold">
+                    <a href="#" id="aUnfold" class="rightarrow"> </a>
+                </div>                
+                <div id="leftcontent"></div>
+            </div>
+            <div id="titlebar">
+                <div id="maintitle">
+                    <h1><a href="http://www.axa-research.org/" target="_blank" title="Risk Explorer">Risk Explorer</a></h1>
+                </div>
+                <form id="recherche">
+                    <input id="searchinput" class="grey" autocomplete="off" />
+                    <input id="searchsubmit" type="submit" />
+                </form>
+
+            </div>        
+            <ul id="autocomplete">
+            </ul>
+            <div id="maps">
+            <input type="button" id="topics" name="topics" value="High level" />    
+            <input type="button" id="size" name="size" value="Size & topics" />    
+            <input type="button" id="growth" name="growth" value="Growth & topics" />    
+            <input type="button" id="combi" name="combi" value="Size & growth" />    
+            <div data-role="content">        
+      </div>  
+            </div>
+        </body>
+    </html>

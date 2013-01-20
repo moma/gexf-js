@@ -201,7 +201,7 @@ function displayNode(_nodeIndex, _recentre) {
     if (_nodeIndex != -1) {
         var _d = GexfJS.graph.nodeList[_nodeIndex],
             _b = _d.coords.base,
-            _str = '<a href=index.html>Cluster Level</a> | <a href=index.html#risk_size=cooc_color=cluster.gexf>Terms Level</a> ',
+            _str = '',
             _cG = $("#leftcolumn");
             _cG.animate({
                 "left" : "0px"
@@ -273,7 +273,11 @@ function displayNode(_nodeIndex, _recentre) {
 
         for (var i in in_neighb) {
                 _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].id + '" onclick="displayNode(' + in_neighb[i].id + ', true); return false;">' + in_neighb[i].label + '</a>';
-                if (decimal( (in_neighb[i].croissance-1)*100,100)>50){
+                
+                if (decimal( (in_neighb[i].croissance-1)*100,100)>25){
+                    _str += '<img src="img/star.gif">';
+                };
+                if (decimal( (in_neighb[i].croissance-1)*100,100)>75){
                     _str += '<img src="img/star.gif">';
                 };
                 if (decimal( (in_neighb[i].croissance-1)*100,100)>150){
@@ -291,9 +295,12 @@ function displayNode(_nodeIndex, _recentre) {
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
         for (var i in out_neighb) {
                 _str += '<li><div class="smallpill" style="background: ' + out_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + out_neighb[i].id + '" onclick="displayNode(' + out_neighb[i].id + ', true); return false;">' + out_neighb[i].label + '</a>';
-                    if (decimal( (out_neighb[i].croissance-1)*100,100)>50){
+                if (decimal( (out_neighb[i].croissance-1)*100,100)>25){
                     _str += '<img src="img/star.gif">';
-                }
+                };
+                if (decimal( (out_neighb[i].croissance-1)*100,100)>75){
+                    _str += '<img src="img/star.gif">';
+                };
                 if (decimal( (out_neighb[i].croissance-1)*100,100)>150){
                     _str += '<img src="img/star.gif">';
                 };
@@ -319,7 +326,7 @@ function displayNode(_nodeIndex, _recentre) {
     _str+='<br/><h4><a href="'+_q+')" target=_blank>Google Search</a>';
     _str+=' <a href="'+_q.replace(/OR/g,"AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
     _str+='<br/><h4>Legend</h4>';
-    _str+='<img src="img/star.gif">: Growth rate between +50% and +150%<br/><img src="img/star.gif"><img src="img/star.gif">: Growth rate above +150%<br/>'
+    _str+='<img src="img/star.gif">: Growth rate between +25% and +75%<br/><img src="img/star.gif"><img src="img/star.gif">: Growth rate between +75% and +150%<br/><img src="img/star.gif"><img src="img/star.gif"><img src="img/star.gif">: Growth rate above +150%<br/>'
     
     $("#leftcontent").html(_str);
 }
