@@ -35,7 +35,7 @@ var GexfJS = {
     totalScroll : 0,
     autoCompletePosition : 0,
     // gestion des taille de label. Permet de garder des labels visibles même en dezoomant beaucoup
-    MaxLabelSize : 16 ,// max size de label
+    MaxLabelSize : 25 ,// max size de label
     ZoomThreshold : 3, // seuil au delà duquel on applique zoomBoost
     ZoomBoost : 3,// facteur de zoom boost
     factorMaxLevel : 2,// facteur max
@@ -119,7 +119,7 @@ var GexfJS = {
             "nodes" : "N&oelig;uds",
             "inLinks" : "Liens entrants depuis :",
             "outLinks" : "Liens sortants vers :",
-            "undirLinks" : "Associated terms:",
+            "undirLinks" : "Specific neighbors:",
             "lensOn" : "Activer le mode loupe",
             "lensOff" : "Désactiver le mode loupe",
             "edgeOn" : "Afficher les sommets",
@@ -232,25 +232,26 @@ function displayNode(_nodeIndex, _recentre) {
         // affichage des infos du noeud
         for (var i in _d.attributes) {
             if ((strLang(i)=='cluster label')){
-                _str += '<li><b>Label</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
+                _str += '<li><b>Main topic:</b> ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
             };
             if (strLang(i)=='weight'){
-                _str += '<li><b>Co-occ.</b> : ' + decimal( _d.attributes[i],100) + '</li>';
+                _str += '<li><b>Co-occ.:</b> ' + decimal( _d.attributes[i],100) + '</li>';
             };  
 
             if (strLang(i)=='period'){
-                _str += '<li><b>Period</b> : ' + _d.attributes[i].replace("_","-") + '</li>';
+                _str += '<li><b>Period:</b> ' + _d.attributes[i].replace("_","-") + '</li>';
             };
             if (strLang(i)=='croissance'){
-                _str += '<li><b>Growth</b> : ' + decimal( (_d.attributes[i]-1)*100,100) + '%</li>';
+                _str += '<li><b>Growth:</b> ' + decimal( (_d.attributes[i]-1)*100,100) + '%</li>';
             }; 
                       
         }
-        _str += '</ul><h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4><ul>';
-
+        
         // on trie les voisins en fonction des liens décroissants
         var in_neighb=[];
         var out_neighb=[];
+        var clustersList=[];
+         var nb_topics=0; // nombre de topics liés au noeud
 // for (var i in _d.attributes) {
 //             if ((strLang(i)=='cluster label')|(strLang(i)=='weight')|(strLang(i)=='period')){
 //                 _str += '<li><b>' + strLang(i) + '</b> : ' + replaceURLWithHyperlinks( _d.attributes[i] ) + '</li>';
@@ -265,9 +266,25 @@ function displayNode(_nodeIndex, _recentre) {
                 color: _n.color.base,
                 label: _n.label,
                 weight: _e.weight,
-                croissance:_n.attributes.croissance,
+                croissance:_n.attributes.croissance,                
                 id : _e.source
                 };
+
+                try{
+                    var num=clustersList[_n.attributes.cluster_index].number+1;
+                }
+                catch(err){
+                    var num=+1;
+                    nb_topics+=1;
+                }
+                
+                clustersList[_n.attributes.cluster_index]={
+                    label:_n.attributes.cluster_label,
+                    color: _n.color.base,
+                    number:num 
+                };
+
+
             }else if ( _e.source == _nodeIndex ) {
                 var _n = GexfJS.graph.nodeList[_e.target];                
                 out_neighb[i] = {
@@ -277,10 +294,37 @@ function displayNode(_nodeIndex, _recentre) {
                 weight: _e.weight,
                 id : _e.target
                 };
+                try{
+                    var num=clustersList[_n.attributes.cluster_index].number+1;
+                }
+                catch(err){
+                    var num=+1;
+                    nb_topics+=1;
+                }
+
+                clustersList[_n.attributes.cluster_index]={
+                    label:_n.attributes.cluster_label,
+                    color: _n.color.base,
+                    number:num 
+
+                };
             } 
         }
         in_neighb.sort(function(a,b){return b.weight-a.weight});        
-        out_neighb.sort(function(a,b){return b.weight-a.weight});        
+        out_neighb.sort(function(a,b){return b.weight-a.weight});     
+
+        if  (nb_topics>1){
+        _str += '<h4>Linked with topics:</h4>';    
+        for (var k in clustersList) {
+          _str += '<li><div class="smallpill" style="background: ' + clustersList[k].color +'"></div>'+ ' ['+clustersList[k].number +'] ' + clustersList[k].label;  
+        }
+    
+        }          
+        
+
+        if (in_neighb.length>0){
+        _str += '<h4>' + ( GexfJS.graph.directed ? strLang("inLinks") : strLang("undirLinks") ) + '</h4>';
+        };
 
         for (var i in in_neighb) {
                 _str += '<li><div class="smallpill" style="background: ' + in_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + in_neighb[i].id + '" onclick="displayNode(' + in_neighb[i].id + ', true); return false;">' + in_neighb[i].label + '</a>';
@@ -302,8 +346,11 @@ function displayNode(_nodeIndex, _recentre) {
                 }                            
         }
 
-        _str+='<h4>More generic terms :</h4>';
+        if (out_neighb.length>0){
+        _str+='<h4>Generic neighbors:</h4>';
         if (GexfJS.graph.directed) _str += '</ul><h4>' + strLang("outLinks") + '</h4><ul>';
+        }
+
         for (var i in out_neighb) {
                 _str += '<li><div class="smallpill" style="background: ' + out_neighb[i].color +'"></div><a href="#" onmouseover="GexfJS.params.activeNode = ' + out_neighb[i].id + '" onclick="displayNode(' + out_neighb[i].id + ', true); return false;">' + out_neighb[i].label + '</a>';
                 if (decimal( (out_neighb[i].croissance-1)*100,100)>25){
