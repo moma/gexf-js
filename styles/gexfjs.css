@@ -53,8 +53,14 @@ h1 a {
     top: 45px;
     width: 530px;
 }
+
+#searchsubmit {
+    position: absolute; left: 360px; top: 45px; width: 20px; height: 20px; margin: 0; padding: 0; height: 16px; border: none; background: none; text-indent: -999px; cursor: pointer; cursor: hand;
+}
+
+
 #maps {
-    position: absolute; left: 300px; top: 5px; width: 600px; margin: 0; padding: 0; height: 60px; border: none; background: none;
+    position: absolute; left: 300px; top: 5px; width: 600px; margin: 0; padding: 0; height: 30px; border: none; background: none;
 }
 
 
@@ -63,9 +69,6 @@ h1 a {
     border-color:#aaa;
 }
 
-#searchsubmit {
-    position: absolute; left: 560px; top: 13px; width: 20px; height: 20px; margin: 0; padding: 0; height: 16px; border: none; background: none; text-indent: -999px; cursor: pointer; cursor: hand;
-}
 
 .grey {
     color: #cccccc; font-style: italic;
@@ -79,7 +82,7 @@ h1 a {
 
 
 #carte {
-    position: absolute; left: 0px; color: #000000; 
+    position: absolute; left: 0px;
 }
 
 /* ZOOM IN OUT */

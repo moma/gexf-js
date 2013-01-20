@@ -214,7 +214,18 @@ function displayNode(_nodeIndex, _recentre) {
 
         //_str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div>' + _d.label + '</h3>';
 
-        _str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div><a href='+'"https://www.google.fr/#output=search&q=%22' + _d.label.replace(" ","+") + '%22" target=_blank>' + _d.label + '</a></h3>';
+        _str += '<h3><div class="largepill" style="background: ' + _d.color.base +'"></div><a href='+'"https://www.google.fr/#output=search&q=%22' + _d.label.replace(" ","+") + '%22" target=_blank>' + _d.label + '</a>';
+
+         if (decimal( (_d.attributes.croissance-1)*100,100)>25){
+                    _str += '<img src="img/star.gif">';
+                };
+                if (decimal( (_d.attributes.croissance-1)*100,100)>75){
+                    _str += '<img src="img/star.gif">';
+                };
+                if (decimal( (_d.attributes.croissance-1)*100,100)>150){
+                    _str += '<img src="img/star.gif">';
+                };
+        _str += '</h3>';
         _q+='%22' + _d.label.replace(" ","+") + '%22+AND+('
         _str += '<h4>' + strLang("nodeAttr") + '</h4>';
         _str += '<ul><li><b>id</b> : ' + _d.id + '</li>';
