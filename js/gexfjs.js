@@ -219,12 +219,23 @@ function displayNode(_nodeIndex, _recentre) {
          if (decimal( (_d.attributes.croissance-1)*100,100)>25){
                     _str += '<img src="img/star.gif">';
                 };
-                if (decimal( (_d.attributes.croissance-1)*100,100)>75){
+        if (decimal( (_d.attributes.croissance-1)*100,100)>75){
                     _str += '<img src="img/star.gif">';
                 };
-                if (decimal( (_d.attributes.croissance-1)*100,100)>150){
+        if (decimal( (_d.attributes.croissance-1)*100,100)>150){
                     _str += '<img src="img/star.gif">';
                 };
+
+        if (decimal( (_d.attributes.croissance-1)*100,100)<-20){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+        if (decimal( (_d.attributes.croissance-1)*100,100)<-50){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+        if (decimal( (_d.attributes.croissance-1)*100,100)<-70){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+
         _str += '</h3>';
         _q+='%22' + _d.label.replace(" ","+") + '%22+AND+('
         _str += '<div id=attributs>';
@@ -338,6 +349,17 @@ function displayNode(_nodeIndex, _recentre) {
                 if (decimal( (in_neighb[i].croissance-1)*100,100)>150){
                     _str += '<img src="img/star.gif">';
                 };
+
+            if (decimal( (in_neighb[i].croissance-1)*100,100)<-20){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+            if (decimal( (in_neighb[i].croissance-1)*100,100)<-50){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+            if (decimal( (in_neighb[i].croissance-1)*100,100)<-70){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+
                  _str += ( GexfJS.params.showEdgeWeight && in_neighb[i].weight ? ' [' + decimal(in_neighb[i].weight,100) + ']' : '') + '</li>';
                 if (count<GexfJS.MaxGoogleTermsInQuery){
                     _q+="%22" + in_neighb[i].label.replace(" ","+") + "%22";                 
@@ -362,6 +384,18 @@ function displayNode(_nodeIndex, _recentre) {
                 if (decimal( (out_neighb[i].croissance-1)*100,100)>150){
                     _str += '<img src="img/star.gif">';
                 };
+
+            if (decimal( (out_neighb[i].croissance-1)*100,100)<-20){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+            if (decimal( (out_neighb[i].croissance-1)*100,100)<-50){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+            if (decimal( (out_neighb[i].croissance-1)*100,100)<-70){
+                    _str += '<img src="img/stargrey.gif">';
+                };
+
+
                  _str += ( GexfJS.params.showEdgeWeight && out_neighb[i].weight ? ' [' + decimal(out_neighb[i].weight,100) + ']' : '') + '</li>';
                 if (count<GexfJS.MaxGoogleTermsInQuery){
                     _q+="%22" + out_neighb[i].label.replace(" ","+") + "%22";                 
@@ -383,8 +417,8 @@ function displayNode(_nodeIndex, _recentre) {
     }
     _str+='<br/><h4><a href="'+_q+')" target=_blank>Google Search</a>';
     _str+=' <a href="'+_q.replace(/OR/g,"AND")+')" target=_blank><img src="img/smile.gif" width=20></a></h4>';
-    _str+='<br/><h4>Legend</h4>';
-    _str+='<img src="img/star.gif">: Growth rate between +25% and +75%<br/><img src="img/star.gif"><img src="img/star.gif">: Growth rate between +75% and +150%<br/><img src="img/star.gif"><img src="img/star.gif"><img src="img/star.gif">: Growth rate above +150%<br/><br/><br/><br/><br/><br/><br/><div id="footer"><p><i>Credits:</i> <a href="http://chavalarias.com" target="_blank"><img src="img/user.png" width=15></a> & <a href="http://jph.cointet.free.fr" target="_blank"><img src="img/user.png" width=15></a> </p></div>'
+    _str+='<br/><h4>Growth rate for 2011-2012</h4>';
+    _str+='<img src="img/star.gif">: between +25% and +75%<br/><img src="img/star.gif"><img src="img/star.gif">: between +75% and +150%<br/><img src="img/star.gif"><img src="img/star.gif"><img src="img/star.gif">: above +150%<br/><img src="img/stargrey.gif">: between -20% and -50%<br/><img src="img/stargrey.gif"><img src="img/stargrey.gif">: between -50% and -70%<br/><img src="img/stargrey.gif"><img src="img/stargrey.gif"><img src="img/stargrey.gif">: below -70%<br/><br/><br/><br/><br/><br/><br/><div id="footer"><p><i>Credits:</i> <a href="http://chavalarias.com" target="_blank"><img src="img/user.png" width=15></a> & <a href="http://jph.cointet.free.fr" target="_blank"><img src="img/user.png" width=15></a> </p></div>'
     
     $("#leftcontent").html(_str);
 }
