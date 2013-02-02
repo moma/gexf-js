@@ -1,3 +1,10 @@
+#### Gexf Maps for risk issues
+
+These maps are released under the Creative Common Licence 3.0 (http://creativecommons.org/licenses/by-nc/3.0/)
+Author: David Chavalarias and Jean-Philippe Cointet
+
+
+
 # JavaScript GEXF Viewer for Gephi #
 
 #### Released under MIT License ###
@@ -35,6 +42,11 @@ Gexf-JS now speaks 7 languages: English, French, Italian, Spanish, Finnish, Turk
 #### Zeynep Akata (turkish translation)
 
 #### Σωτήρης Φραγκίσκος (greek translation)
+
+#### David Chavalarias
+Adaptation of the viz and lateral panel for custom purposes. See https://github.com/moma/gexf-js
+http://chavalarias.com
+https://twitter.com/chavalarias
 
 ### How to use ? ##
 
